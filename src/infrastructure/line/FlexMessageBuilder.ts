@@ -1,5 +1,7 @@
 import { IFlexBubble } from '@/domain/services/ILineMessagingService';
-import { FlexBubble, FlexCarousel } from '@line/bot-sdk';
+import { messagingApi } from '@line/bot-sdk';
+type FlexBubble = messagingApi.FlexBubble;
+type FlexCarousel = messagingApi.FlexCarousel;
 
 export function buildFlexCarousel(bubbles: IFlexBubble[]): FlexCarousel {
   return {
@@ -58,14 +60,20 @@ function buildBubble(data: IFlexBubble): FlexBubble {
           layout: 'horizontal',
           contents: [
             {
-              type: 'text',
-              text: `⏰ อีก ${data.daysLeft} วัน`,
-              size: 'sm',
-              weight: 'bold',
-              color: '#d97706',
+              type: 'box',
+              layout: 'vertical',
               backgroundColor: '#fef3c7',
               paddingAll: '4px',
               cornerRadius: '99px',
+              contents: [
+                {
+                  type: 'text',
+                  text: `⏰ อีก ${data.daysLeft} วัน`,
+                  size: 'sm',
+                  weight: 'bold',
+                  color: '#d97706',
+                },
+              ],
             },
           ],
           paddingBottom: '12px',
