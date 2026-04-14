@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx shadcn@latest init --defaults)",
+      "Bash(npx shadcn@latest add button card input badge sheet label select --yes)",
+      "Bash(git init:*)",
+      "Bash(node -e \"const p = require\\('/Users/user/reminder/package.json'\\); console.log\\(JSON.stringify\\(Object.keys\\(p.dependencies\\)\\)\\)\")",
+      "Bash(node -e ':*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('lucide-react installed:', d['version']\\)\" cat /Users/user/reminder/node_modules/zod/package.json)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('zod installed:', d['version']\\)\" cat /Users/user/reminder/node_modules/@radix-ui)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('shadcn:', d['version']\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('name:', d['name'], 'version:', d['version'], 'desc:', d.get\\('description',''\\)\\)\")",
+      "Bash(ls /Users/user/reminder/.env*)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('latest lucide-react:', d['version']\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('types field:', d.get\\('types', d.get\\('typings', 'none'\\)\\)\\)\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('zod version:', d['version']\\)\")",
+      "Bash(cat -n /Users/user/reminder/app/liff/bills/[id]/edit/page.tsx)",
+      "Bash(git -C /Users/user/reminder add next.config.ts tsconfig.json .gitignore)",
+      "Bash(git -C /Users/user/reminder commit -m ':*)",
+      "Bash(cat /Users/user/reminder/app/api/external-apps/[id]/route.ts)",
+      "Bash(npx next:*)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(npm run:*)",
+      "Bash(grep -v \"^$\")",
+      "Bash(git rm:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/user/reminder/app/api/bills",
+      "/Users/user/reminder/app/liff/bills/[id]",
+      "/Users/user/reminder/app/liff/bills/[id]/edit"
+    ]
+  }
+}
