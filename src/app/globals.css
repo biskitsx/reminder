@@ -117,6 +117,20 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  20%       { transform: rotate(25deg); }
+  40%       { transform: rotate(-10deg); }
+  60%       { transform: rotate(20deg); }
+  80%       { transform: rotate(-5deg); }
+}
+
+.animate-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave 1.5s ease-in-out infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

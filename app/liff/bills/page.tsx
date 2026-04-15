@@ -82,7 +82,7 @@ export default function BillsPage() {
                 <Image src={pictureUrl} alt={displayName} width={48} height={48} className="rounded-full" />
               )}
               <div>
-                <h1 className="text-2xl font-bold">สวัสดี, {displayName} <span className="inline-block animate-bounce">👋</span></h1>
+                <h1 className="text-2xl font-bold">สวัสดี, {displayName} <span className="animate-wave">👋</span></h1>
                 <p className="text-sm text-muted-foreground">จัดการบิลและการแจ้งเตือนของคุณได้ที่นี่</p>
               </div>
             </>
