@@ -73,9 +73,12 @@ export default function BillsPage() {
 
   return (
     <div className="p-4 space-y-4">
-      <div className="rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 p-5">
-        <p className="text-xs text-muted-foreground mb-3">Bill Reminder</p>
-        <div className="flex items-center gap-3">
+      <div className="relative overflow-hidden rounded-xl border bg-gradient-to-br from-background via-background to-blue-500/5 px-8 py-6">
+        {/* decorative blobs */}
+        <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-500/10 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-5 left-1/3 h-20 w-20 rounded-full bg-violet-500/10 blur-xl" />
+        {/* <p className="relative text-xs text-muted-foreground mb-3">Bill Reminder</p> */}
+        <div className="relative flex items-center gap-3">
           {displayName ? (
             <>
               {pictureUrl && (

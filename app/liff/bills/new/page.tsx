@@ -24,6 +24,7 @@ export default function NewBillPage() {
   const [reminderDays, setReminderDays] = useState<number[]>([3, 1]);
   const [paymentApps, setPaymentApps] = useState<IExternalApp[]>([]);
   const [billingApps, setBillingApps] = useState<IExternalApp[]>([]);
+  const [serviceApps, setServiceApps] = useState<IExternalApp[]>([]);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -31,12 +32,15 @@ export default function NewBillPage() {
       try {
         const token = await getToken();
         const headers = { 'x-liff-token': token };
-        const [pa, ba] = await Promise.all([
+        const [pa, ba, sa] = await Promise.all([
           fetch('/api/external-apps?appType=payment', { headers }).then((r) => r.json()),
           fetch('/api/external-apps?appType=billing', { headers }).then((r) => r.json()),
+          fetch('/api/external-apps?appType=service', { headers }).then((r) => r.json()),
         ]);
         setPaymentApps(Array.isArray(pa) ? pa : []);
         setBillingApps(Array.isArray(ba) ? ba : []);
+        setServiceApps(Array.isArray(sa) ? sa : []);
+        console.log({ pa, ba, sa });
       } catch {
         alert('โหลดแอพไม่สำเร็จ');
       }
@@ -72,22 +76,52 @@ export default function NewBillPage() {
         </button>
         <h1 className="text-xl font-bold">เพิ่มบิลใหม่</h1>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-1">
-          <Label>ชื่อบิล</Label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} required placeholder="เช่น Netflix, ค่าไฟ" />
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Section 1: ข้อมูลพื้นฐาน */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">1</span>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">ข้อมูลพื้นฐาน</p>
+          </div>
+          <div className="rounded-xl border bg-card p-4 space-y-4">
+            <div className="space-y-1">
+              <Label>ชื่อบิล</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} required placeholder="เช่น Netflix, ค่าไฟ" />
+            </div>
+            <div className="space-y-2">
+              <Label>ไอคอน</Label>
+              <IconPicker value={icon} onChange={setIcon} apps={[...paymentApps, ...billingApps, ...serviceApps]} />
+            </div>
+          </div>
         </div>
-        <div className="space-y-2">
-          <Label>ไอคอน</Label>
-          <IconPicker value={icon} onChange={setIcon} apps={[...paymentApps, ...billingApps]} />
+
+        {/* Section 2: กำหนดการชำระ */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">2</span>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">กำหนดการชำระ</p>
+          </div>
+          <div className="rounded-xl border bg-card p-4 space-y-4">
+            <div className="space-y-2">
+              <Label>วันครบกำหนด</Label>
+              <DueDayPicker value={dueDay} onChange={setDueDay} />
+            </div>
+            <ReminderDaysPicker value={reminderDays} onChange={setReminderDays} />
+          </div>
         </div>
-        <div className="space-y-2">
-          <Label>วันครบกำหนด</Label>
-          <DueDayPicker value={dueDay} onChange={setDueDay} />
+
+        {/* Section 3: แอพที่เชื่อมต่อ */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">3</span>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">แอพที่เชื่อมต่อ</p>
+          </div>
+          <div className="rounded-xl border bg-card p-4 space-y-4">
+            <AppPicker apps={billingApps} selectedId={billingAppId} onChange={setBillingAppId} label="แอพดูยอด (ไม่บังคับ)" />
+            <AppPicker apps={paymentApps} selectedId={paymentAppId} onChange={setPaymentAppId} required label="แอพจ่ายเงิน *" />
+          </div>
         </div>
-        <AppPicker apps={billingApps} selectedId={billingAppId} onChange={setBillingAppId} label="แอพดูยอด (ไม่บังคับ)" />
-        <AppPicker apps={paymentApps} selectedId={paymentAppId} onChange={setPaymentAppId} required label="แอพจ่ายเงิน *" />
-        <ReminderDaysPicker value={reminderDays} onChange={setReminderDays} />
+
         <Button type="submit" className="w-full" disabled={saving}>
           {saving ? 'กำลังบันทึก...' : 'บันทึก'}
         </Button>

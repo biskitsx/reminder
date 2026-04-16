@@ -6,25 +6,26 @@ interface DueDayPickerProps {
 }
 
 export function DueDayPicker({ value, onChange }: DueDayPickerProps) {
-  const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
   return (
-    <div className="grid grid-cols-7 gap-1">
-      {days.map((day) => (
-        <button
-          key={day}
-          type="button"
-          onClick={() => onChange(day)}
-          aria-pressed={value === day}
-          className={`h-9 w-full rounded-md text-sm font-medium transition-colors ${
-            value === day
-              ? 'bg-primary text-primary-foreground'
-              : 'border border-input hover:bg-muted'
-          }`}
-        >
-          {day}
-        </button>
-      ))}
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-muted-foreground">วันที่ครบกำหนด</span>
+        <span className="text-2xl font-bold tabular-nums w-10 text-right">{value}</span>
+      </div>
+      <input
+        type="range"
+        min={1}
+        max={31}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full accent-primary h-2 cursor-pointer"
+      />
+      <div className="flex justify-between text-xs text-muted-foreground">
+        <span>1</span>
+        <span>10</span>
+        <span>20</span>
+        <span>31</span>
+      </div>
     </div>
   );
 }

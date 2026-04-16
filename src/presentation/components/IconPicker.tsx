@@ -35,7 +35,7 @@ export function IconPicker({ value, onChange, apps = [] }: IconPickerProps) {
             tab === 'app' ? 'border-primary bg-primary text-primary-foreground' : 'border-input hover:bg-muted'
           }`}
         >
-          Logo แอพ
+          Logo
         </button>
       </div>
 
