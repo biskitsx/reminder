@@ -64,7 +64,7 @@ export function IconPicker({ value, onChange, apps = [] }: IconPickerProps) {
 
       {tab === 'app' && (
         <div className="flex flex-wrap gap-2">
-          {apps.filter((a) => a.logoUrl).map((app) => (
+          {apps.filter((a, i, arr) => a.logoUrl && arr.findIndex((x) => x.id === a.id) === i).map((app) => (
             <button
               key={app.id}
               type="button"
