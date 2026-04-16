@@ -6,9 +6,6 @@ import { toZonedTime } from 'date-fns-tz';
 const BANGKOK_TZ = 'Asia/Bangkok';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  if (!verifyCronSecret(req)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
 
   const now = toZonedTime(new Date(), BANGKOK_TZ);
   const month = now.getMonth() + 1;
