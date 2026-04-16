@@ -1,24 +1,5 @@
 'use client';
 
-const PRESETS = [
-  { emoji: '🏠', label: 'ค่าห้อง/บ้าน' },
-  { emoji: '⚡', label: 'ค่าไฟ' },
-  { emoji: '💧', label: 'ค่าน้ำ' },
-  { emoji: '📶', label: 'อินเทอร์เน็ต' },
-  { emoji: '📱', label: 'ค่าโทรศัพท์' },
-  { emoji: '🎬', label: 'Netflix' },
-  { emoji: '🎵', label: 'Spotify' },
-  { emoji: '📺', label: 'YouTube Premium' },
-  { emoji: '🎮', label: 'Game' },
-  { emoji: '💳', label: 'บัตรเครดิต' },
-  { emoji: '🏦', label: 'ผ่อนรถ' },
-  { emoji: '🏡', label: 'ผ่อนบ้าน' },
-  { emoji: '🛡️', label: 'ประกัน' },
-  { emoji: '🛒', label: 'Subscription อื่นๆ' },
-  { emoji: '🎓', label: 'ค่าเรียน' },
-  { emoji: '🏋️', label: 'Gym' },
-];
-
 interface IconPickerProps {
   value: string | null;
   onChange: (icon: string | null) => void;
@@ -26,31 +7,29 @@ interface IconPickerProps {
 
 export function IconPicker({ value, onChange }: IconPickerProps) {
   return (
-    <div className="grid grid-cols-8 gap-1">
-      <button
-        type="button"
-        onClick={() => onChange(null)}
-        aria-pressed={value === null}
-        className={`h-10 w-full rounded-md text-xs transition-colors flex items-center justify-center border ${
-          value === null ? 'border-primary bg-primary text-primary-foreground' : 'border-input hover:bg-muted text-muted-foreground'
-        }`}
-      >
-        ไม่มี
-      </button>
-      {PRESETS.map(({ emoji, label }) => (
+    <div className="flex items-center gap-3">
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-input bg-muted text-2xl shrink-0">
+        {value || '?'}
+      </div>
+      <input
+        type="text"
+        value={value ?? ''}
+        onChange={(e) => {
+          const val = [...e.target.value].at(-1) ?? null;
+          onChange(val);
+        }}
+        placeholder="วาง emoji ที่นี่"
+        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      />
+      {value && (
         <button
-          key={emoji}
           type="button"
-          onClick={() => onChange(emoji)}
-          aria-label={label}
-          aria-pressed={value === emoji}
-          className={`h-10 w-full rounded-md text-xl transition-colors flex items-center justify-center border ${
-            value === emoji ? 'border-primary bg-primary/10' : 'border-input hover:bg-muted'
-          }`}
+          onClick={() => onChange(null)}
+          className="text-muted-foreground hover:text-destructive text-xs shrink-0"
         >
-          {emoji}
+          ล้าง
         </button>
-      ))}
+      )}
     </div>
   );
 }
