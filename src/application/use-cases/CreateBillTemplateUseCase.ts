@@ -9,6 +9,7 @@ export class CreateBillTemplateUseCase {
     return this.repo.create({
       userId: dto.userId,
       name: dto.name,
+      icon: dto.icon ?? null,
       dueDay: dto.dueDay,
       paymentAppId: dto.paymentAppId,
       billingAppId: dto.billingAppId ?? null,

@@ -8,6 +8,7 @@ function toEntity(doc: any): IBillTemplate {
     id: doc._id.toString(),
     userId: doc.userId,
     name: doc.name,
+    icon: doc.icon ?? null,
     dueDay: doc.dueDay,
     paymentAppId: doc.paymentAppId.toString(),
     billingAppId: doc.billingAppId ? doc.billingAppId.toString() : null,

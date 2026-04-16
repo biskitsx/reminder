@@ -2,6 +2,7 @@ export interface IBillTemplate {
   id: string;
   userId: string;
   name: string;
+  icon: string | null; // emoji
   dueDay: number; // 1–31
   paymentAppId: string;
   billingAppId: string | null;

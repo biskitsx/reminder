@@ -10,6 +10,7 @@ const BillTemplateSchema = new Schema<BillTemplateDocument>(
   {
     userId: { type: String, required: true },
     name: { type: String, required: true },
+    icon: { type: String, default: null },
     dueDay: { type: Number, required: true, min: 1, max: 31 },
     paymentAppId: { type: Schema.Types.ObjectId, ref: 'ExternalApp', required: true },
     billingAppId: { type: Schema.Types.ObjectId, ref: 'ExternalApp', default: null },

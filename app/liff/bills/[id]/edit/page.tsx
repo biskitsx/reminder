@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { AppPicker } from '@/presentation/components/AppPicker';
 import { ReminderDaysPicker } from '@/presentation/components/ReminderDaysPicker';
 import { DueDayPicker } from '@/presentation/components/DueDayPicker';
+import { IconPicker } from '@/presentation/components/IconPicker';
 import { IBillTemplate } from '@/domain/entities/BillTemplate';
 import { IExternalApp } from '@/domain/entities/ExternalApp';
 
@@ -18,6 +19,7 @@ export default function EditBillPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
   const [name, setName] = useState('');
+  const [icon, setIcon] = useState<string | null>(null);
   const [dueDay, setDueDay] = useState(1);
   const [paymentAppId, setPaymentAppId] = useState<string | null>(null);
   const [billingAppId, setBillingAppId] = useState<string | null>(null);
@@ -39,6 +41,7 @@ export default function EditBillPage() {
         const template: IBillTemplate | undefined = templates.find((t: IBillTemplate) => t.id === id);
         if (template) {
           setName(template.name);
+          setIcon(template.icon ?? null);
           setDueDay(template.dueDay);
           setPaymentAppId(template.paymentAppId);
           setBillingAppId(template.billingAppId);
@@ -62,7 +65,7 @@ export default function EditBillPage() {
       const res = await fetch(`/api/bills/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', 'x-liff-token': token },
-        body: JSON.stringify({ name, dueDay, paymentAppId, billingAppId, reminderDays }),
+        body: JSON.stringify({ name, icon, dueDay, paymentAppId, billingAppId, reminderDays }),
       });
       if (res.ok) router.push('/liff/bills');
       else alert('เกิดข้อผิดพลาด');
@@ -85,6 +88,10 @@ export default function EditBillPage() {
         <div className="space-y-1">
           <Label>ชื่อบิล</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} required />
+        </div>
+        <div className="space-y-2">
+          <Label>ไอคอน</Label>
+          <IconPicker value={icon} onChange={setIcon} />
         </div>
         <div className="space-y-2">
           <Label>วันครบกำหนด</Label>
