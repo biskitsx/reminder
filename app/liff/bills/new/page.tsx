@@ -79,7 +79,7 @@ export default function NewBillPage() {
         </div>
         <div className="space-y-2">
           <Label>ไอคอน</Label>
-          <IconPicker value={icon} onChange={setIcon} />
+          <IconPicker value={icon} onChange={setIcon} apps={[...paymentApps, ...billingApps]} />
         </div>
         <div className="space-y-2">
           <Label>วันครบกำหนด</Label>
