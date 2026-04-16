@@ -3,8 +3,8 @@ export interface IFlexBubble {
   billName: string;
   dueDate: string;     // formatted Thai date e.g. "5 เม.ย. 2026"
   daysLeft: number;
-  paymentApp: { name: string; deepLink: string | null; webUrl: string | null } | null;
-  billingApp: { name: string; deepLink: string | null; webUrl: string | null } | null;
+  paymentApp: { name: string; logoUrl: string; deepLink: string | null; webUrl: string | null } | null;
+  billingApp: { name: string; logoUrl: string; deepLink: string | null; webUrl: string | null } | null;
 }
 
 export interface ILineMessagingService {

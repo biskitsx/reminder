@@ -3,6 +3,12 @@ import { messagingApi } from '@line/bot-sdk';
 type FlexBubble = messagingApi.FlexBubble;
 type FlexCarousel = messagingApi.FlexCarousel;
 
+function resolveUri(deepLink: string | null, webUrl: string | null): string | null {
+  if (deepLink && (deepLink.startsWith('https://') || deepLink.startsWith('http://'))) return deepLink;
+  if (webUrl) return webUrl;
+  return null;
+}
+
 export function buildFlexCarousel(bubbles: IFlexBubble[]): FlexCarousel {
   return {
     type: 'carousel',
@@ -10,33 +16,42 @@ export function buildFlexCarousel(bubbles: IFlexBubble[]): FlexCarousel {
   };
 }
 
+function buildAppImageButton(app: { name: string; logoUrl: string; deepLink: string | null; webUrl: string | null }): messagingApi.FlexBox | null {
+  const uri = resolveUri(app.deepLink, app.webUrl);
+  if (!uri) return null;
+  return {
+    type: 'box',
+    layout: 'vertical',
+    flex: 1,
+    borderWidth: '1px',
+    borderColor: '#e5e7eb',
+    cornerRadius: '8px',
+    paddingAll: '8px',
+    action: { type: 'uri', label: app.name, uri },
+    contents: [
+      {
+        type: 'image',
+        url: app.logoUrl,
+        size: 'full',
+        aspectMode: 'fit',
+        aspectRatio: '1:1',
+      }
+    ],
+  };
+}
+
 function buildBubble(data: IFlexBubble): FlexBubble {
-  const actions = [];
+  const appButtons: messagingApi.FlexComponent[] = [];
 
   if (data.billingApp) {
-    const uri = data.billingApp.deepLink ?? data.billingApp.webUrl ?? '';
-    actions.push({
-      type: 'uri' as const,
-      label: `📱 ดูยอด`,
-      uri,
-    });
+    const box = buildAppImageButton(data.billingApp);
+    if (box) appButtons.push(box);
   }
 
-  if (data.paymentApp && (data.paymentApp.deepLink || data.paymentApp.webUrl)) {
-    const uri = data.paymentApp.deepLink ?? data.paymentApp.webUrl ?? '';
-    actions.push({
-      type: 'uri' as const,
-      label: `💳 ${data.paymentApp.name}`,
-      uri,
-    });
+  if (data.paymentApp) {
+    const box = buildAppImageButton(data.paymentApp);
+    if (box) appButtons.push(box);
   }
-
-  actions.push({
-    type: 'postback' as const,
-    label: '✅ จ่ายแล้ว',
-    data: `MARK_PAID:${data.instanceId}`,
-    displayText: 'จ่ายแล้ว',
-  });
 
   return {
     type: 'bubble',
@@ -78,17 +93,27 @@ function buildBubble(data: IFlexBubble): FlexBubble {
           ],
           paddingBottom: '12px',
         },
+        ...(appButtons.length > 0
+          ? [
+              {
+                type: 'box' as const,
+                layout: 'horizontal' as const,
+                spacing: 'sm' as const,
+                contents: appButtons,
+                paddingBottom: '8px',
+              },
+            ]
+          : []),
         {
-          type: 'box',
-          layout: 'horizontal',
-          spacing: 'sm',
-          contents: actions.map((action) => ({
-            type: 'button',
-            action,
-            style: action.type === 'postback' ? 'primary' : 'secondary',
-            color: action.type === 'postback' ? '#10b981' : undefined,
-            flex: 1,
-          })),
+          type: 'button',
+          action: {
+            type: 'postback',
+            label: '✅ จ่ายแล้ว',
+            data: `MARK_PAID:${data.instanceId}`,
+            displayText: 'จ่ายแล้ว',
+          },
+          style: 'primary',
+          color: '#10b981',
         },
       ],
       paddingAll: '16px',
